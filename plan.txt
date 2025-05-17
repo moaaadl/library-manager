@@ -1,0 +1,35 @@
+# Day 1
+# Add __str__ and __repr__ methods to Book class for nice printing
+
+# Day 2
+# Make sure add_book, remove_books, and show_books work properly
+# Add print messages for success/failure of actions
+
+# Day 3
+# Improve search_book to support partial matches and case-insensitive search
+
+# Day 4
+# Learn how to save/load books data to/from a JSON file
+# Implement save_books() and load_books() methods
+
+# Day 5
+# Build a simple CLI loop that accepts user commands (Add, Show, Search, Remove, Save, Exit)
+
+# Day 6
+# Add edit_book() method to modify book info (title, author, year)
+
+# Day 7
+# Add functions to show stats: total books, oldest book, most frequent author
+
+# Day 8
+# Learn basics of Python unittest
+# Write tests for key functions like add, remove, and search
+
+# Day 9
+# Improve CLI: clear error messages and input validation (e.g., year must be a number)
+
+# Day 10
+# Organize your project files (library.py, main.py)
+# Prepare a README.md with project description and usage instructions
+# Add .gitignore to exclude unnecessary files from GitHub
+
