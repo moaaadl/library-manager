@@ -17,4 +17,5 @@ Learn Python step by step and build small features each day.
 
 ```bash
 git clone https://github.com/moaaadl/library-manager.git
+cd library-manager
 python main.py
