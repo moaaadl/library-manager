@@ -10,7 +10,7 @@ class Book:
 
     # When you print a Book object, this is what shows up — nice and neat
     def __str__(self):
-        return f"'{self.title} by {self.author}, {self.year}'"
+        return f"'{self.title} by {self.author} in {self.year}'"
     
     # This turns the book into a dictionary — perfect for saving to JSON later
     def to_dict(self):
@@ -41,7 +41,7 @@ class Library:
 
     # Show all books in the library, one by one
     def show_books(self):
-        print("Here are the books in the library:")
+        print("Here are the books in the library: \n")
         for book in self.books:
             print(book)
 
@@ -50,7 +50,7 @@ class Library:
         for book in self.books:
             if name_book.lower() in book.title.lower():
                 self.books.remove(book)
-                print(f"'{name_book}' removed successfully! ✂️")
+                print(f"'{name_book}' removed successfully!")
                 return
         print(f"Oops, no book called '{name_book}' found here.")
 
@@ -60,7 +60,7 @@ class Library:
             if name_book.lower() in book.title.lower():
                 print(f"Found this book for you:\n{book}")
                 return
-        print(f"No luck finding '{name_book}' here.")
+        print(f"Book name '{name_book}' not found here.")
 
     # Save all books to a JSON file
     def save_to_file(self, filename):
@@ -84,20 +84,3 @@ class Library:
                 self.books = [Book.from_dict(d) for d in data]
         else:
             print("File not found")
-
-
-        
-
-
-
-
-# Let's try it out:
-
-lib = Library()
-
-
-# Load from file — brings books back from JSON
-lib.load_from_file("books.json")
-
-# Show again — books are back baby!
-lib.show_books()
