@@ -1,17 +1,34 @@
-# Add __repr__ methods to Book class for nice printing
-
-# Build a simple CLI loop that accepts user commands (Add, Show, Search, Remove, Save, Exit)
+# Add __repr__ method to Book class for better debug printing
 
 # Add edit_book() method to modify book info (title, author, year)
 
-# Add functions to show stats: total books, oldest book, most frequent author
+# Add functions to show stats:
+#   - total number of books
+#   - the oldest book
+#   - the most frequent author
 
 # Learn basics of Python unittest
-# Write tests for key functions like add, remove, and search
+# Write tests for key functions:
+#   - add_book()
+#   - remove_books()
+#   - search_book()
+#   - edit_book() (optional)
 
-# Improve CLI: clear error messages and input validation (e.g., year must be a number)
+# Improve CLI experience:
+#   - clear error messages
+#   - input validation (e.g., title must not be empty, year must be a number)
 
-# Organize your project files (library.py, main.py)
-# Prepare a README.md with project description and usage instructions
-# Add .gitignore to exclude unnecessary files from GitHub
+# Add new CLI command: "stats" to display book statistics
 
+# Fix problem: remove_books() should update the JSON file after removing the book
+
+# Improve show_books() to display books in a clean numbered list format
+
+# Fix crash on Ctrl+C:
+#   - wrap main loop in try/except to catch KeyboardInterrupt
+#   - show friendly exit message
+
+# Optional (clean code):
+#   - use constants for filenames (e.g., BOOKS_FILE = "books.json")
+#   - add docstrings to classes and methods
+#   - improve messages shown to user
