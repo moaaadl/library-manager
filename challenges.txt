@@ -1,0 +1,3 @@
+# Add __repr__ method to Book class for better debug printing
+
+i do all challenges , only one left.
