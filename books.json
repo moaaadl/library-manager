@@ -1,13 +1,4 @@
 [
   { "title": "The Alchemist", "author": "Paulo Coelho", "year": 1988 },
-  { "title": "moaad", "author": "mo", "year": "1000" },
-  { "title": "nice", "author": "good", "year": 1000 },
-  { "title": "moaad", "author": "momo", "year": 2000 },
-  { "title": "moaad", "author": "momooo", "year": 1 },
-  { "title": "moad", "author": "momomo", "year": 0 },
-  { "title": "momo", "author": "mimi", "year": 0 },
-  { "title": "m", "author": "mama", "year": null },
-  { "title": "moaaad", "author": "mimi", "year": 1 },
-  { "title": "moaad", "author": "nice", "year": 1 },
-  { "title": "momomo", "author": "nicece", "year": 1 }
+  { "title": "moaad", "author": "mo", "year": "1000" }
 ]
