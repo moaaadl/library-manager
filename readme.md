@@ -28,4 +28,4 @@ git clone https://github.com/moaaadl/library-manager.git
 cd library-manager
 
 # Run the program
-python main.py
+python3 main.py
