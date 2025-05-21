@@ -32,7 +32,7 @@ def main():
         "remove": "Remove a book",
         "edit": "Edit a book",
         "state": "Functions to show stats",
-        "exit": "Exit the program",
+        "exit or x": "Exit the program",
         "help": "Show this help menu"
     }
 
@@ -83,7 +83,7 @@ def main():
             elif command == "help":
                 show_help(commands)
 
-            elif command == "exit":
+            elif command == "exit" or command == "x":
                 print("Bye!")
                 break
 
