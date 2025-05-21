@@ -35,6 +35,7 @@ class Library:
     # Start with an empty library (no books yet)
     def __init__(self):
         self.books = []
+        self.load_from_file(BOOKS_FILE)
 
     # Add a book to the list
     def add_book(self, book):
@@ -53,46 +54,68 @@ class Library:
     # Remove a book by name (not case-sensitive)
     def remove_books(self, name_book):
         for book in self.books:
-            if name_book.lower() in book.title.lower():
-                self.books.remove(book)
-                self.save_to_file(BOOKS_FILE)
-                print(f"'{name_book}' removed successfully!")
+            if name_book.lower() == book.title.lower():
+                # this for check if remove or not
+                check = input(f"Are you sure you want to remove '{name_book}' ? (Y/N) : ") 
+                if check.lower() == 'y':
+                    self.books.remove(book)
+                    self.save_to_file(BOOKS_FILE)
+                    print(f"'{name_book}' removed successfully!")
+                else:
+                    print('You canceled the remove')
                 return
         print(f"Oops, no book called '{name_book}' found here.")
 
-    # Search for a book by name (also not case-sensitive)
+
+    # Search for a book by title name
     def search_book(self, name_book):
+        found = False  # check if we found any matching book
+        c = 0  # Counter
+
         for book in self.books:
             if name_book.lower() in book.title.lower():
-                print(f"Found this book for you:\n{book}")
-                return
-        print(f"Book name '{name_book}' not found here.")
+                if not found:
+                    print("Matching books:")  # Only print this once, when we find the first match
+                    found = True
+                c += 1
+                print(f"{c} - {book}")
+
+        if not found:
+            print(f"Book name '{name_book}' not found here.")
+
+
+
     # Editing the books in a simple way :)
     def edit_book(self, name_book):
         for book in self.books:
-            if name_book.lower() in book.title.lower():
+            if name_book.lower() == book.title.lower():
+                self.books.remove(book) # remove the old one
                 new_title = input('Enter the new title : ')
                 new_author = input('Enter the new author : ')
                 new_year = input('Enter the new year : ')
                 b = Book(new_title, new_author, new_year)
-                self.books.append(b)
+                self.books.append(b) # add the edit one
                 self.save_to_file(BOOKS_FILE)
                 self.load_from_file(BOOKS_FILE)
                 print(f"\nBook with title {name_book} change to \n {b} \n Edited successfully!\n")
-            else:
-                print(f"Book name '{name_book}' not found here.")
+                return
+        print(f"Book name '{name_book}' not found here.")
 
     def stats_book(self):
-        count_books = len(self.books) # number of books
+        if not self.books: # if is no books
+            print("No books to analyze.")
+            return
+
+        count_books = len(self.books)
         print(f"The number of books : {count_books}")
-        
-        min_year = self.books[0].year # the first book year
 
+        oldest = self.books[0]
         for book in self.books:
-            if int(book.year) < int(min_year): 
-                min_year = book.year # the min year after for loop
+            if int(book.year) < int(oldest.year):
+                oldest = book
 
-        print(f"The oldest book was published in: {min_year}")
+        print(f"The oldest book was published in: '{oldest.year}' by '{oldest.author}'")
+
 
     # Save all the books to a JSON file
     def save_to_file(self, filename):
