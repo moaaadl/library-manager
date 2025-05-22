@@ -33,7 +33,7 @@ def main():
         "edit": "Edit a book",
         "state": "Functions to show stats",
         "exit or x": "Exit the program",
-        "help": "Show this help menu"
+        "help": "Show help menu"
     }
 
     try:
@@ -76,7 +76,7 @@ def main():
             elif command == "remove":
                 title = input("Enter title to remove: ").strip()
                 if title:
-                    lib.remove_books(title)
+                    lib.remove_book(title)
                 else:
                     print("Remove canceled.")
 
