@@ -1,7 +1,6 @@
 [
   { "title": "The Alchemist", "author": "Paulo Coelho", "year": 1988 },
-  { "title": "momo", "author": "moaad", "year": 101010 },
   { "title": "moaad", "author": "mo", "year": 10101 },
   { "title": "momomo", "author": "mimi", "year": 1010110 },
-  { "title": "modd", "author": "mimi", "year": 9383 }
+  { "title": "momo", "author": "moaad", "year": "1" }
 ]
