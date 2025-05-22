@@ -52,7 +52,7 @@ class Library:
             print(f"{c} - {book}")
 
     # Remove a book by name (not case-sensitive)
-    def remove_books(self, name_book):
+    def remove_book(self, name_book):
         for book in self.books:
             if name_book.lower() == book.title.lower():
                 # this for check if remove or not
@@ -85,21 +85,57 @@ class Library:
 
 
 
-    # Editing the books in a simple way :)
+    # Editing the books
     def edit_book(self, name_book):
         for book in self.books:
             if name_book.lower() == book.title.lower():
-                self.books.remove(book) # remove the old one
-                new_title = input('Enter the new title : ')
-                new_author = input('Enter the new author : ')
-                new_year = input('Enter the new year : ')
-                b = Book(new_title, new_author, new_year)
-                self.books.append(b) # add the edit one
+                while True:
+                    check = input(f"What do you want to change from '{name_book}' ? : (Title / author / year) ").strip().lower()
+                    if check not in ['title', 'author', 'year']:
+                        print("Please select Title, Author, or Year")
+                        continue 
+                    else:
+                        break  # out
+
+                if check == "title":
+                    while True:
+                        new_title = input('Enter the new title: ')
+                        if new_title == book.title:
+                            print("You didn't change anything! Try again.")
+                        else:
+                            book.title = new_title
+                            break
+
+                elif check == "author":
+                    while True:
+                        new_author = input('Enter the new author: ')
+                        if new_author == book.author:
+                            print("You didn't change anything! Try again.")
+                        else:
+                            book.author = new_author
+                            break
+
+                elif check == "year":
+                    while True:
+                        new_year = input('Enter the new year: ')
+                        if not new_year.isdigit():
+                            print("Year must be a number! Try again.")
+                            continue
+
+                        if new_year == book.year:
+                            print("You didn't change anything! Try again.")
+                            continue
+
+                        book.year = new_year
+                        break
+
+
                 self.save_to_file(BOOKS_FILE)
-                self.load_from_file(BOOKS_FILE)
-                print(f"\nBook with title {name_book} change to \n {b} \n Edited successfully!\n")
+                print(f"\nBook with title '{name_book}' changed to \n{book}\nEdited successfully!\n")
                 return
+
         print(f"Book name '{name_book}' not found here.")
+
 
     def stats_book(self):
         if not self.books: # if is no books
