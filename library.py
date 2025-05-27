@@ -15,18 +15,23 @@ class Book:
     def __str__(self):
         return f"'{self.title} by {self.author} in {self.year}'"
     
-    # Turn the book into a dictionary so we can save it later (like to JSON)
+    # This turns the book into a simple dictionary (so we can save it easily)
     def to_dict(self):
-        return {
+        book_data = {
             "title": self.title,
             "author": self.author,
             "year": self.year
         }
+        return book_data
 
-    # Take a dictionary and turn it back into a Book object
+    # This takes a dictionary and makes a Book from it
     @classmethod
     def from_dict(cls, data):
-        return cls(data["title"], data["author"], data["year"])
+        title = data["title"]
+        author = data["author"]
+        year = data["year"]
+        return cls(title, author, year)
+
 
 
 class Library:
@@ -75,7 +80,7 @@ class Library:
         for book in self.books:
             if name_book.lower() in book.title.lower():
                 if not found:
-                    print("Matching books:")  # Only print this once, when we find the first match
+                    print(f"Matching books with title name '{name_book}':")  # Only print this once, when we find the first match
                     found = True
                 c += 1
                 print(f"{c} - {book}")
@@ -155,19 +160,29 @@ class Library:
 
     # Save all the books to a JSON file
     def save_to_file(self, filename):
-        # First, convert every book to a dictionary
-        data = [book.to_dict() for book in self.books]
-        
-        # Then write that list into a file as JSON
-        with open(filename, 'w') as f:
-            json.dump(data, f)
+        # Turn the books into dictionaries
+        all_books = []
+        for book in self.books:
+            all_books.append(book.to_dict())
+
+        # Save the list of books to a JSON file
+        file = open(filename, 'w')
+        json.dump(all_books, file)
+        file.close()
+
 
     # Load books from a JSON file into the library
     def load_from_file(self, filename):
-        # Only do it if the file exists (to avoid crashing)
+        # If the file exists, read it
         if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                data = json.load(f)
-                self.books = [Book.from_dict(d) for d in data]
+            file = open(filename, 'r')
+            data = json.load(file)
+            file.close()
+
+            # Convert each dictionary back into a Book object
+            self.books = []
+            for item in data:
+                self.books.append(Book.from_dict(item))
         else:
-            print("File not found")
+            print("File doesn't exist")
+
