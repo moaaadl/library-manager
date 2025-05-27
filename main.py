@@ -18,7 +18,7 @@ def show_help(commands):
     print("\n===== Library Management System =====")
     print("Available commands:")
     for cmd, desc in commands.items():
-        print(f"  {cmd:<8} - {desc}")
+        print(f"  {cmd:<10} - {desc}")
     print("=====================================\n")
 
 def main():
