@@ -1,1 +1,4 @@
 # Add __repr__ method to Book class for better debug printing
+# Prevent adding duplicate books by checking title and author before adding.
+# Allow user to specify the filename when saving/loading books instead of hardcoded books.json.
+# Add input validation for year to allow only valid years.
