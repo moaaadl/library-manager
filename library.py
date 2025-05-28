@@ -15,6 +15,11 @@ class Book:
     def __str__(self):
         return f"'{self.title} by {self.author} in {self.year}'"
     
+    # When you inspect the book in a list or debug, this is what shows up
+    def __repr__(self):
+        return f"Book(title='{self.title}', author='{self.author}', year='{self.year}')"
+
+
     # This turns the book into a simple dictionary (so we can save it easily)
     def to_dict(self):
         book_data = {
@@ -23,6 +28,7 @@ class Book:
             "year": self.year
         }
         return book_data
+    
 
     # This takes a dictionary and makes a Book from it
     @classmethod
