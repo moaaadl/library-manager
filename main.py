@@ -8,8 +8,13 @@ def get_valid_year():
         try:
             year = input("Year : ").strip()
             if not year:
-                return None
-            return int(year)
+                print("Error: Year is missing.")
+                continue
+            intYear = int(year)
+            if intYear < 1800 or intYear > 2025:
+                print("Enter a valid year.")
+                continue
+            return intYear
         except ValueError:
             print("Please enter a valid year (numeric value).")
 
@@ -31,7 +36,7 @@ def main():
         "search": "Search for books",
         "remove": "Remove a book",
         "edit": "Edit a book",
-        "state": "Functions to show stats",
+        "state": "Show stats",
         "exit or x": "Exit the program",
         "help": "Show help menu"
     }
@@ -41,6 +46,7 @@ def main():
             command = input("\nEnter command (or 'help' for options): ").strip().lower()
 
             if command == "add":
+                print("\nAll fields must be provided!\n")
                 title = input("Title: ").strip()
                 author = input("Author: ").strip()
                 year = get_valid_year()
