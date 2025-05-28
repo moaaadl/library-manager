@@ -7,13 +7,6 @@ Pull requests are welcome!
 
 A clean and simple command-line project to manage your book collection using Python and Object-Oriented Programming.
 
-## Features
-
-- Add books with title, author, and year  
-- Show all books in the library  
-- Search for a book by title  
-- Remove a book from the collection (and file!)  
-- Saves your data in a `books.json` file automatically
 
 ## How to Run It
 
