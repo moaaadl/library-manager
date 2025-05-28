@@ -4,10 +4,6 @@
 Fork this project, play with the code, and maybe even add a new feature!  
 Pull requests are welcome!
 
-
-A clean and simple command-line project to manage your book collection using Python and Object-Oriented Programming.
-
-
 ## How to Run It
 
 ```bash
