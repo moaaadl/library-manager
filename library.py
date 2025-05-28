@@ -50,9 +50,13 @@ class Library:
 
     # Add a book to the list
     def add_book(self, book):
-        self.books.append(book)
-        self.save_to_file(BOOKS_FILE)
-        print(f"{book} has been added successfully!")
+        check = input(f"Are you sure you want to save '{book.title}'? (Y/N) ").strip().lower()
+        if check == "y":
+            self.books.append(book)
+            self.save_to_file(BOOKS_FILE)
+            print(f"{book} has been added successfully!")
+        else:
+            print("Add canceled.")
 
     # Show all the books in the library
     def show_books(self):
