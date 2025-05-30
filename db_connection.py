@@ -9,7 +9,9 @@ class Connection:
     def __init__(self):
         pass
 
-    def get_connection(self):
+
+    @staticmethod
+    def get_connection():
         try:
             connection = mysql.connector.connect(
                 host=os.getenv("DB_HOST"),
@@ -19,7 +21,6 @@ class Connection:
             )
 
             if connection.is_connected():
-                print("\nSuccessfully connected to the database!")
                 return connection
 
         except Error as e:
