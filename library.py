@@ -1,8 +1,5 @@
-import os
-import json
+from db_connection import Connection
 
-# json file
-BOOKS_FILE = "books.json"
 
 class Book:
     # This sets up a new book with title, author, and year
@@ -37,16 +34,31 @@ class Book:
         author = data["author"]
         year = data["year"]
         return cls(title, author, year)
+    
+
+    def save_to_db(self):
+        db = Connection.get_connection()
+        if not db:
+            return False
+        try:
+            cursor = db.cursor()
+            query = "INSERT INTO books (title, author, year) VALUES (%s, %s, %s)"
+            value = (self.title, self.author, self.year)
+            cursor.execute(query, value) 
+            db.commit()
+        except Exception as e:
+            print(f"Error saving to DB: {e}")
+        finally:
+            db.close()
 
 
 
 class Library:
 
-
     # Start with an empty library (no books yet)
     def __init__(self):
         self.books = []
-        self.load_from_file(BOOKS_FILE)
+        self.load_from_db()
 
     # Add a book to the list
     def add_book(self, book):
@@ -55,7 +67,7 @@ class Library:
             check = input(f"Are you sure you want to save '{book.title}'? (Y/N) ").strip().lower()
             if check == "y":
                 self.books.append(book)
-                self.save_to_file(BOOKS_FILE)
+                book.save_to_db()
                 print(f"{book} has been added successfully!")
             else:
                 print("Add canceled.")
@@ -72,24 +84,36 @@ class Library:
 
     # Remove a book by name (not case-sensitive)
     def remove_book(self, name_book):
+        db = Connection.get_connection()
         for book in self.books:
             if name_book.lower() == book.title.lower():
                 # this for check if remove or not
                 check = input(f"Are you sure you want to remove '{name_book}' ? (Y/N) : ") 
                 if check.lower() == 'y':
                     self.books.remove(book)
-                    self.save_to_file(BOOKS_FILE)
-                    print(f"'{name_book}' removed successfully!")
+                    print(f"'{name_book}' removed successfully!") # remove from array 
+
+                    # remove from db
+                    try:
+                        cursor = db.cursor()
+                        query = "DELETE FROM books WHERE title = %s AND author = %s AND year = %s"
+                        value = (book.title, book.author, book.year)
+                        cursor.execute(query, value) 
+                        db.commit()
+                    except Exception as e:
+                        print(f"Error saving to DB: {e}")
+                    finally:
+                        db.close()
                 else:
                     print('You canceled the remove')
                 return
         print(f"Oops, no book called '{name_book}' found here.")
 
 
-    # Search for a book by title name
+    # Search for a book by title name only in self.books not DB
     def search_book(self, name_book):
         found = False  # check if we found any matching book
-        c = 0  # Counter
+        c = 0 
 
         for book in self.books:
             if name_book.lower() in book.title.lower():
@@ -104,12 +128,14 @@ class Library:
 
 
 
-    # Editing the books
+    # Editing the books from the self.books and DB
     def edit_book(self, name_book):
+        db = Connection().get_connection()
+        cursor = db.cursor()
         for book in self.books:
             if name_book.lower() == book.title.lower():
                 while True:
-                    check = input(f"What do you want to change from '{name_book}' ? : (Title / author / year) ").strip().lower()
+                    check = input(f"What do you want to change from '{name_book}' ? : (Title / author / year) : ").strip().lower()
                     if check not in ['title', 'author', 'year']:
                         print("Please select Title, Author, or Year")
                         continue 
@@ -122,7 +148,14 @@ class Library:
                         if new_title == book.title:
                             print("You didn't change anything! Try again.")
                         else:
-                            book.title = new_title
+                            try:
+                                query = "UPDATE books SET title = %s WHERE title = %s AND author = %s AND year = %s"
+                                values = (new_title, book.title, book.author, book.year)
+                                cursor.execute(query, values) 
+                                db.commit()
+                                book.title = new_title
+                            except Exception as e:
+                                print(f"Error saving to DB: {e}")
                             break
 
                 elif check == "author":
@@ -131,7 +164,14 @@ class Library:
                         if new_author == book.author:
                             print("You didn't change anything! Try again.")
                         else:
-                            book.author = new_author
+                            try:
+                                query = "UPDATE books SET author = %s WHERE title = %s AND author = %s AND year = %s"
+                                values = (new_author, book.title, book.author, book.year)
+                                cursor.execute(query, values) 
+                                db.commit()
+                                book.author = new_author
+                            except Exception as e:
+                                print(f"Error saving to DB: {e}")
                             break
 
                 elif check == "year":
@@ -145,11 +185,18 @@ class Library:
                             print("You didn't change anything! Try again.")
                             continue
 
-                        book.year = new_year
+                        try:
+                            query = "UPDATE books SET year = %s WHERE title = %s AND author = %s AND year = %s"
+                            values = (new_year, book.title, book.author, book.year)
+                            cursor.execute(query, values) 
+                            db.commit()
+                            book.year = new_year
+                        except Exception as e:
+                            print(f"Error saving to DB: {e}")
                         break
 
-
-                self.save_to_file(BOOKS_FILE)
+                cursor.close()
+                db.close()
                 print(f"\nBook with title '{name_book}' changed to \n{book}\nEdited successfully!\n")
                 return
 
@@ -172,31 +219,17 @@ class Library:
         print(f"The oldest book was published in: '{oldest.year}' by '{oldest.author}'")
 
 
-    # Save all the books to a JSON file
-    def save_to_file(self, filename):
-        # Turn the books into dictionaries
-        all_books = []
-        for book in self.books:
-            all_books.append(book.to_dict())
-
-        # Save the list of books to a JSON file
-        file = open(filename, 'w')
-        json.dump(all_books, file)
-        file.close()
-
-
-    # Load books from a JSON file into the library
-    def load_from_file(self, filename):
-        # If the file exists, read it
-        if os.path.exists(filename):
-            file = open(filename, 'r')
-            data = json.load(file)
-            file.close()
-
-            # Convert each dictionary back into a Book object
+    def load_from_db(self):
+        db = Connection.get_connection()
+        try:
+            cursor = db.cursor()
+            cursor.execute("SELECT title, author, year FROM books")
+            results = cursor.fetchall()
             self.books = []
-            for item in data:
-                self.books.append(Book.from_dict(item))
-        else:
-            print("File doesn't exist")
-
+            for row in results:
+                book = Book(row[0], row[1], row[2])
+                self.books.append(book)
+        except Exception as e:
+            print(f"Error loading from DB: {e}")
+        finally:
+            db.close()
