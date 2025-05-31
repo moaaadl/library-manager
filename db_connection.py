@@ -24,5 +24,4 @@ class Connection:
                 return connection
 
         except Error as e:
-            print(f"Error connecting to the database: {e}")
             return None
