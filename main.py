@@ -1,6 +1,7 @@
 # === CLI logic for managing the library system ===
 
 from library import Library, Book  # Import main classes
+from db_connection import Connection
 
 # Validate year input from user (must be numeric or empty)
 def get_valid_year():
@@ -27,9 +28,22 @@ def show_help(commands):
     print("=====================================\n")
 
 def main():
-    lib = Library()
-    lib.load_from_file("books.json")
+    # Check database connection before starting
+    print("\nChecking database connection...")
+    con = Connection().get_connection()
+    if con is None:
+        print("\nCannot start application without database connection!")
+        print("Please ensure:")
+        print("   • MySQL server is running")
+        print("   • .env file exists with correct DB credentials")
+        print("   • Database exists and is accessible\n")
+        return  # Exit main function
+    else:
+        print("\nDatabase connected successfully!")
+        con.close()
 
+    lib = Library()
+    
     commands = {
         "add": "Add a new book",
         "show": "Display all books",
@@ -38,6 +52,7 @@ def main():
         "edit": "Edit a book",
         "state": "Show stats",
         "exit or x": "Exit the program",
+        "clear" : "Clear the content",
         "help": "Show help menu"
     }
 
@@ -89,14 +104,18 @@ def main():
             elif command == "help":
                 show_help(commands)
 
+            elif command == "clear":
+                import os
+                os.system('cls' if os.name == 'nt' else 'clear')
+
             elif command == "exit" or command == "x":
-                print("Bye!")
+                print("\nExiting...")
                 break
 
             else:
                 print("\nUnknown command! Check 'help'")
     except KeyboardInterrupt:
-        print("\nBye!")
+        print("\nExiting...")
 
 
 # Run only if this file is the entry point
