@@ -3,22 +3,6 @@
 from library import Library, Book  # Import main classes
 from db_connection import Connection
 
-# Validate year input from user (must be numeric or empty)
-def get_valid_year():
-    while True:
-        try:
-            year = input("Year : ").strip()
-            if not year:
-                print("Error: Year is missing.")
-                continue
-            intYear = int(year)
-            if intYear < 1800 or intYear > 2025:
-                print("Enter a valid year.")
-                continue
-            return intYear
-        except ValueError:
-            print("Please enter a valid year (numeric value).")
-
 # Display help menu
 def show_help(commands):
     print("\n===== Library Management System =====")
@@ -46,30 +30,45 @@ def main():
     
     commands = {
         "add": "Add a new book",
-        "show": "Display all books",
+        "show": "Display all books", 
         "search": "Search for books",
         "remove": "Remove a book",
         "edit": "Edit a book",
         "state": "Show stats",
         "exit or x": "Exit the program",
-        "clear" : "Clear the content",
-        "help": "Show help menu"
+        "clear": "Clear the content",
+        "help add": "Show how to add books",
+        "help remove": "Show how to remove books", 
+        "help search": "Show how to search books",
+        "help edit": "Show how to edit books"
     }
 
     try:
         while True:
             command = input("\nEnter command (or 'help' for options): ").strip().lower()
 
-            if command == "add":
-                print("\nAll fields must be provided!\n")
-                title = input("Title: ").strip()
-                author = input("Author: ").strip()
-                year = get_valid_year()
-                if title and author:
-                    b = Book(title, author, year)
-                    lib.add_book(b)
-                else:
-                    print("Book not added. All fields must be provided.")
+            if command.startswith("add "):
+                args = command[4:].strip()
+                try:
+                    import shlex
+                    parts = shlex.split(args)
+                    
+                    if len(parts) == 3:
+                        title, author, year_str = parts
+                        try:
+                            year = int(year_str)
+                            if 1800 <= year <= 2025:
+                                b = Book(title, author, year)
+                                lib.add_book(b)
+                            else:
+                                print("Enter a valid year")
+                        except ValueError:
+                            print("Year must be a number")
+                    else:
+                        print('Usage: add "Title" "Author" year')
+                except ValueError:
+                    print('Usage: add "Title" "Author" year')
+                    print('Make sure to use quotes around title and author')
 
             elif command == "show":
                 if lib.books:
@@ -80,29 +79,72 @@ def main():
             elif command == "state":
                 lib.stats_book()
 
-            elif command == "edit":
-                title = input("Enter title to edit: ").strip()
-                if title: 
-                    lib.edit_book(title)
+            elif command.startswith("edit "):
+                # Extract the search term from the command
+                edit_term = command[5:]  # Remove "edit " part
+                if edit_term:
+                    lib.edit_book(edit_term)
                 else:
-                    print("Edit canceled.")
+                    print("Usage: edit <term>")
 
-            elif command == "search":
-                title = input("Enter title to search: ").strip()
-                if title:
-                    lib.search_book(title)
-                else:
-                    print("Search canceled.")
+            # elif command == "edit":
+            #     title = input("Enter title to edit: ").strip()
+            #     if title: 
+            #         lib.edit_book(title)
+            #     else:
+            #         print("Edit canceled.")
 
-            elif command == "remove":
-                title = input("Enter title to remove: ").strip()
-                if title:
-                    lib.remove_book(title)
+            elif command.startswith("search "):
+                # Extract the search term from the command
+                search_term = command[7:]  # Remove "search " part
+                if search_term:
+                    lib.search_book(search_term)
                 else:
-                    print("Remove canceled.")
+                    print("Usage: search <term>")
+
+            # elif command == "search":
+            #     search_term = input("Enter search term: ").strip()
+            #     if search_term:
+            #         lib.search_book(search_term)
+
+            elif command.startswith("remove "):
+                # Extract the search term from the command
+                remove_term = command[7:]  # Remove "search " part
+                if remove_term:
+                    lib.remove_book(remove_term)
+                else:
+                    print("Usage: remove <term>")
+
+            # elif command == "remove":
+            #     title = input("Enter title to remove: ").strip()
+            #     if title:
+            #         lib.remove_book(title)
+            #     else:
+            #         print("Remove canceled.")
 
             elif command == "help":
                 show_help(commands)
+
+            elif command == "help add":
+                print("\n=== ADD COMMAND ===")
+                print('Usage: add "Title" "Author" year')
+                print("===================\n")
+
+            elif command == "help remove":
+                print("\n=== REMOVE COMMAND ===")
+                print("Usage: remove BookTitle")
+                print("======================\n")
+
+            elif command == "help search":
+                print("\n=== SEARCH COMMAND ===")
+                print("Usage: search term")
+                print("======================\n")
+
+            elif command == "help edit":
+                print("\n=== EDIT COMMAND ===")
+                print("Usage: edit BookTitle")
+                print("Then follow prompts to change title/author/year")
+                print("====================\n")
 
             elif command == "clear":
                 import os
@@ -118,6 +160,6 @@ def main():
         print("\nExiting...")
 
 
-# Run only if this file is the entry point
+# Run only if this file is main.py
 if __name__ == "__main__":
     main()
