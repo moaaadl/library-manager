@@ -116,12 +116,13 @@ class Library:
         c = 0 
 
         for book in self.books:
-            if name_book.lower() in book.title.lower():
+            if name_book.lower() in book.title.lower() or name_book.lower() in book.author.lower():
                 if not found:
-                    print(f"Matching books with title name '{name_book}':")  # Only print this once, when we find the first match
+                    print(f"Matching books : '{name_book}':")
                     found = True
                 c += 1
                 print(f"{c} - {book}")
+            
 
         if not found:
             print(f"Book name '{name_book}' not found here.")
