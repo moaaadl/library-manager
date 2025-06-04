@@ -58,17 +58,26 @@ python3 main.py
 | `clear`       | Clear the terminal screen            |
 | `help`        | Show all available commands          |
 | `exit` or `X` | Exit the program                     |
+| `help add`    | Show how to add books                |
+| `help edit`   | Show how to edit books               |
+| `help search` | Show how to search books             |
+| `help remove` | Show how to remove books             |
 
 <h3>Example Usage</h3>
 
 ```
-Enter command (or 'help' for options): add
+Enter command (or 'help' for options): add "Can't Hurt Me" "David Goggins" 2018
+Are you sure you want to save 'Can't Hurt Me'? (Y/N) y
+'Can't Hurt Me by David Goggins in 2018' has been added successfully!
 
-All fields must be provided!
+Enter command (or 'help' for options): search Goggins
+Matching books for 'Goggins':
+1 - 'Can't Hurt Me by David Goggins in 2018'
 
-Title: Can't hurt me
-Author: David goggins
-Year: 2018
-Are you sure you want to save 'The Great Gatsby'? (Y/N) y
-'Can't hurt me by David goggins in 2018' has been added successfully!
+Enter command (or 'help' for options): help add
+
+=== ADD COMMAND ===
+Usage: add "Title" "Author" year
+Example: add "1984" "George Orwell" 1949
+===================
 ```
