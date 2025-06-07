@@ -1,4 +1,6 @@
 from db_connection import Connection
+from colorama import Fore, init
+init(autoreset=True)
 
 
 class Book:
@@ -64,15 +66,15 @@ class Library:
     def add_book(self, book):
         titles = [b.title.lower() for b in self.books]
         if book.title.lower() not in titles:
-            check = input(f"Are you sure you want to save '{book.title}'? (Y/N) ").strip().lower()
+            check = input(Fore.RED + f"Are you sure you want to save '{book.title}'? (Y/N) ").strip().lower()
             if check == "y":
                 self.books.append(book)
                 book.save_to_db()
-                print(f"{book} has been added successfully!")
+                print(Fore.GREEN + f"{book} has been added successfully!")
             else:
-                print("Add canceled.")
+                print(Fore.RED + "Add canceled.")
         else:
-            print(f"Book {book.title} is on library!")
+            print(Fore.YELLOW + f"Book {book.title} is on library!")
 
     # Show all the books in the library
     def show_books(self):
@@ -88,10 +90,10 @@ class Library:
         for book in self.books:
             if name_book.lower() == book.title.lower():
                 # this for check if remove or not
-                check = input(f"Are you sure you want to remove '{name_book}' ? (Y/N) : ") 
+                check = input(Fore.RED + f"Are you sure you want to remove '{name_book}' ? (Y/N) : ") 
                 if check.lower() == 'y':
                     self.books.remove(book)
-                    print(f"'{name_book}' removed successfully!") # remove from array 
+                    print(Fore.GREEN + f"'{name_book}' removed successfully!") # remove from array 
 
                     # remove from db
                     try:
@@ -105,9 +107,9 @@ class Library:
                     finally:
                         db.close()
                 else:
-                    print('You canceled the remove')
+                    print(Fore.RED + 'You canceled the remove')
                 return
-        print(f"Oops, no book called '{name_book}' found here.")
+        print(Fore.RED + f"Oops, no book called '{name_book}' found here.")
 
 
     # Search for a book by title name only in self.books not DB
@@ -125,7 +127,7 @@ class Library:
             
 
         if not found:
-            print(f"Book name '{name_book}' not found here.")
+            print(Fore.RED + f"Book name '{name_book}' not found here.")
 
 
 
@@ -138,16 +140,16 @@ class Library:
                 while True:
                     check = input(f"What do you want to change from '{name_book}' ? : (Title / author / year) : ").strip().lower()
                     if check not in ['title', 'author', 'year']:
-                        print("Please select Title, Author, or Year")
+                        print(Fore.RED + "Please select Title, Author, or Year")
                         continue 
                     else:
                         break  # out
 
                 if check == "title":
                     while True:
-                        new_title = input('Enter the new title: ')
+                        new_title = input(Fore.BLUE + 'Enter the new title: ')
                         if new_title == book.title:
-                            print("You didn't change anything! Try again.")
+                            print(Fore.RED + "You didn't change anything! Try again.")
                         else:
                             try:
                                 query = "UPDATE books SET title = %s WHERE title = %s AND author = %s AND year = %s"
@@ -161,9 +163,9 @@ class Library:
 
                 elif check == "author":
                     while True:
-                        new_author = input('Enter the new author: ')
+                        new_author = input(Fore.BLUE + 'Enter the new author: ')
                         if new_author == book.author:
-                            print("You didn't change anything! Try again.")
+                            print(Fore.RED + "You didn't change anything! Try again.")
                         else:
                             try:
                                 query = "UPDATE books SET author = %s WHERE title = %s AND author = %s AND year = %s"
@@ -177,13 +179,13 @@ class Library:
 
                 elif check == "year":
                     while True:
-                        new_year = input('Enter the new year: ')
+                        new_year = input(Fore.BLUE + 'Enter the new year: ')
                         if not new_year.isdigit():
-                            print("Year must be a number! Try again.")
+                            print(Fore.RED + "Year must be a number! Try again.")
                             continue
 
                         if new_year == book.year:
-                            print("You didn't change anything! Try again.")
+                            print(Fore.RED + "You didn't change anything! Try again.")
                             continue
 
                         try:
@@ -198,26 +200,26 @@ class Library:
 
                 cursor.close()
                 db.close()
-                print(f"\nBook with title '{name_book}' changed to \n{book}\nEdited successfully!\n")
+                print(Fore.GREEN + f"\nBook with title '{name_book}' changed to \n{book}\nEdited successfully!\n")
                 return
 
-        print(f"Book name '{name_book}' not found here.")
+        print(Fore.RED + f"Book name '{name_book}' not found here.")
 
 
     def stats_book(self):
         if not self.books: # if is no books
-            print("No books to analyze.")
+            print(Fore.YELLOW + "No books to analyze.")
             return
 
         count_books = len(self.books)
-        print(f"The number of books : {count_books}")
+        print(Fore.CYAN + f"The number of books : {count_books}")
 
         oldest = self.books[0]
         for book in self.books:
             if int(book.year) < int(oldest.year):
                 oldest = book
 
-        print(f"The oldest book was published in: '{oldest.year}' by '{oldest.author}'")
+        print(Fore.CYAN + f"The oldest book was published in: '{oldest.year}' by '{oldest.author}'")
 
 
     def load_from_db(self):

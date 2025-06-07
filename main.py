@@ -2,28 +2,30 @@
 
 from library import Library, Book  # Import main classes
 from db_connection import Connection
+from colorama import Fore, init
+init(autoreset=True)
 
 # Display help menu
 def show_help(commands):
-    print("\n===== Library Management System =====")
-    print("Available commands:")
+    print(Fore.BLUE + "\n===== Library Management System =====")
+    print(Fore.BLUE + "Available commands:")
     for cmd, desc in commands.items():
-        print(f"  {cmd:<10} - {desc}")
-    print("=====================================\n")
+        print(Fore.BLUE + f"  {cmd:<10} - {desc}")
+    print(Fore.BLUE + "=====================================\n")
 
 def main():
     # Check database connection before starting
-    print("\nChecking database connection...")
+    print(Fore.YELLOW + "\nChecking database connection...")
     con = Connection().get_connection()
     if con is None:
-        print("\nCannot start application without database connection!")
-        print("Please ensure:")
-        print("   • MySQL server is running")
-        print("   • .env file exists with correct DB credentials")
-        print("   • Database exists and is accessible\n")
+        print(Fore.YELLOW + "\nCannot start application without database connection!")
+        print(Fore.YELLOW + "Please ensure:")
+        print(Fore.YELLOW + "   • MySQL server is running")
+        print(Fore.YELLOW + "   • .env file exists with correct DB credentials")
+        print(Fore.YELLOW + "   • Database exists and is accessible\n")
         return  # Exit main function
     else:
-        print("\nDatabase connected successfully!")
+        print(Fore.GREEN + "\nDatabase connected successfully!")
         con.close()
 
     lib = Library()
@@ -61,20 +63,20 @@ def main():
                                 b = Book(title, author, year)
                                 lib.add_book(b)
                             else:
-                                print("Enter a valid year")
+                                print(Fore.RED + "Enter a valid year")
                         except ValueError:
-                            print("Year must be a number")
+                            print(Fore.RED + "Year must be a number")
                     else:
-                        print('Usage: add "Title" "Author" year')
+                        print(Fore.RED + 'Usage: add "Title" "Author" year')
                 except ValueError:
-                    print('Usage: add "Title" "Author" year')
-                    print('Make sure to use quotes around title and author')
+                    print(Fore.RED + 'Usage: add "Title" "Author" year')
+                    print(Fore.RED + 'Make sure to use quotes around title and author')
 
             elif command == "show":
                 if lib.books:
                     lib.show_books()
                 else:
-                    print("Library is empty.")
+                    print(Fore.RED + "Library is empty.")
 
             elif command == "state":
                 lib.stats_book()
@@ -85,7 +87,7 @@ def main():
                 if edit_term:
                     lib.edit_book(edit_term)
                 else:
-                    print("Usage: edit <term>")
+                    print(Fore.RED + "Usage: edit <term>")
 
             # elif command == "edit":
             #     title = input("Enter title to edit: ").strip()
@@ -100,7 +102,7 @@ def main():
                 if search_term:
                     lib.search_book(search_term)
                 else:
-                    print("Usage: search <term>")
+                    print(Fore.RED + "Usage: search <term>")
 
             # elif command == "search":
             #     search_term = input("Enter search term: ").strip()
@@ -113,7 +115,7 @@ def main():
                 if remove_term:
                     lib.remove_book(remove_term)
                 else:
-                    print("Usage: remove <term>")
+                    print(Fore.RED + "Usage: remove <term>")
 
             # elif command == "remove":
             #     title = input("Enter title to remove: ").strip()
@@ -126,38 +128,38 @@ def main():
                 show_help(commands)
 
             elif command == "help add":
-                print("\n=== ADD COMMAND ===")
-                print('Usage: add "Title" "Author" year')
-                print("===================\n")
+                print(Fore.BLUE + "\n=== ADD COMMAND ===")
+                print(Fore.BLUE + 'Usage: add "Title" "Author" year')
+                print(Fore.BLUE + "===================\n")
 
             elif command == "help remove":
-                print("\n=== REMOVE COMMAND ===")
-                print("Usage: remove BookTitle")
-                print("======================\n")
+                print(Fore.BLUE + "\n=== REMOVE COMMAND ===")
+                print(Fore.BLUE + "Usage: remove BookTitle")
+                print(Fore.BLUE + "======================\n")
 
             elif command == "help search":
-                print("\n=== SEARCH COMMAND ===")
-                print("Usage: search term")
-                print("======================\n")
+                print(Fore.BLUE + "\n=== SEARCH COMMAND ===")
+                print(Fore.BLUE + "Usage: search term")
+                print(Fore.BLUE + "======================\n")
 
             elif command == "help edit":
-                print("\n=== EDIT COMMAND ===")
-                print("Usage: edit BookTitle")
-                print("Then follow prompts to change title/author/year")
-                print("====================\n")
+                print(Fore.BLUE + "\n=== EDIT COMMAND ===")
+                print(Fore.BLUE + "Usage: edit BookTitle")
+                print(Fore.BLUE + "Then follow prompts to change title/author/year")
+                print(Fore.BLUE + "====================\n")
 
             elif command == "clear":
                 import os
                 os.system('cls' if os.name == 'nt' else 'clear')
 
             elif command == "exit" or command == "x":
-                print("\nExiting...")
+                print(Fore.CYAN + "\nExiting...")
                 break
 
             else:
-                print("\nUnknown command! Check 'help'")
+                print(Fore.RED + "\nUnknown command! Check 'help'")
     except KeyboardInterrupt:
-        print("\nExiting...")
+        print(Fore.CYAN + "\nExiting...")
 
 
 # Run only if this file is main.py
