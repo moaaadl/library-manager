@@ -1,8 +1,8 @@
 # 📚 Library Manager (Python OOP Project)
 
 **Are you learning Python too?**  
-Fork this project, play with the code, and maybe even add a new feature!  
-Pull requests are welcome!
+<p>Fork this project, play with the code, and maybe even add a new feature!  
+Pull requests are welcome!</p>
 
 <h3>Installation & Setup</h3>
 
@@ -14,33 +14,23 @@ git clone https://github.com/moaaadl/library-manager.git
 cd library-manager
 
 # Install Required Packages
-pip install mysql-connector-python python-dotenv
-```
-<h3>Set Up MySQL Database</h3>
-
-```sql
-CREATE DATABASE library_db;
-USE library_db;
-
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
-    author VARCHAR(200) NOT NULL,
-    year INT NOT NULL
-);
+pip install python-dotenv
 ```
 
-<h3>Configure Environment Variables</h3>
+<h3>Database Setup</h3>
 
-Create a `.env` file in the project root directory:
 
-```env
-DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASS=your_mysql_password
-DB_NAME=library_db
-```
+<p>The application now uses SQLite, which requires no additional setup! The database file (library.db) will be created automatically when you first run the application.
+SQLite benefits:
+
+No separate database server needed
+Lightweight and fast
+Perfect for local development
+Database stored as a single file</p>
+
+
 <h3>Run the Application</h3>
+
 
 ```bash
 python3 main.py
