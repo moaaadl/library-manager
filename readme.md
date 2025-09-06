@@ -28,13 +28,6 @@ Lightweight and fast
 Perfect for local development
 Database stored as a single file</p>
 
-
-<h3>Run the Application</h3>
-
-
-```bash
-python3 main.py
-```
 <h3>How to Use</h3>
 
 | Command       | Description                          |
